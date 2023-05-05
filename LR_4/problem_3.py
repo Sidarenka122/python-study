@@ -63,7 +63,10 @@ class Validity:
 
 
 class House:
-    __id = 0
+    _id = 0
+
+    def deleteAttribute(self, name):
+        del self[name]
 
     @staticmethod
     def find_buildings_with_number_of_rooms(buildings_array, room_number):
@@ -88,6 +91,9 @@ class House:
         buildings_in_the_floor_range = list(filter(check_floor_range, buildings_with_room_number))
 
         return buildings_in_the_floor_range
+    def __new__(cls, *args, **kwargs):
+        cls._id += 1
+        return object.__new__(cls)
 
     def __init__(self, build_year, apartment_number, square_ft, floor, room_number, street, building_type,
                  lifetime):
@@ -99,7 +105,7 @@ class House:
         self.__building_type = building_type
         self.__lifetime = lifetime
         self.__build_year = build_year
-        self.__id += 1
+        self.__id = self._id
 
     def get_building_id(self):
         return self.__id
@@ -154,7 +160,7 @@ class House:
             self.__lifetime = lifetime
 
     def get_build_year(self):
-        return self.__lifetime
+        return self.__build_year
 
     def set_build_year(self, build_year):
         if Validity.is_valid_integer(build_year):
@@ -175,28 +181,28 @@ class House:
 # б) список квартир, имеющих заданное число комнат и
 # расположенных на этаже, который находится в заданном промежутке;
 
-building1 = House(2020, 82, 78, 2, 3, 'Novovilenskaya', 'block', 40)
-building2 = House(1999, 77, 40, 1, 1, 'Pushkina', 'panel', 50)
-building3 = House(2001, 34, 40, 2, 1, 'Kolasa', 'panel', 45)
-building4 = House(2000, 12, 85, 8, 3, 'Odoevskogo', 'panel', 50)
-building5 = House(2011, 109, 45, 8, 1, 'Beruta', 'wood', 25)
-building6 = House(1999, 5, 55, 4, 2, 'Mavra', 'block', 40)
+def analyze_buildings():
+    building1 = House(2020, 82, 78, 2, 3, 'Novovilenskaya', 'block', 40)
+    building2 = House(1999, 77, 40, 1, 1, 'Pushkina', 'panel', 50)
+    building3 = House(2001, 34, 40, 2, 1, 'Kolasa', 'panel', 45)
+    building4 = House(2000, 12, 85, 8, 3, 'Odoevskogo', 'panel', 50)
+    building5 = House(2011, 109, 45, 8, 1, 'Beruta', 'wood', 25)
+    building6 = House(1999, 5, 55, 4, 2, 'Mavra', 'block', 40)
 
-# buildings = [building1, building2, building3, building4, building5, building6]
-buildings = [building2]
+    buildings = [building1, building2, building3, building4, building5, building6]
 
-room_number = input("Enter room number \n")
+    room_number = input("Enter room number \n")
 
-if Validity.is_valid_integer(room_number):
-    ArrayHelper.print(House.find_buildings_with_number_of_rooms(buildings, int(room_number)))
+    if Validity.is_valid_integer(room_number):
+        ArrayHelper.print(House.find_buildings_with_number_of_rooms(buildings, int(room_number)))
 
-print('************************')
+    print('************************')
 
-floor_min = input("Enter min floor \n")
-floor_max = input("Enter max floor \n")
+    floor_min = input("Enter min floor \n")
+    floor_max = input("Enter max floor \n")
 
-print('************************')
+    print('************************')
 
-if Validity.is_valid_integer(floor_min) & Validity.is_valid_integer(floor_max):
-    ArrayHelper.print(House.find_buildings_on_the_floor_with_room_number(buildings, int(room_number), int(floor_min),
-                                                                         int(floor_max)))
+    if Validity.is_valid_integer(floor_min) & Validity.is_valid_integer(floor_max):
+        ArrayHelper.print(House.find_buildings_on_the_floor_with_room_number(buildings, int(room_number), int(floor_min),
+                                                                             int(floor_max)))
